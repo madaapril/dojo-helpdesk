@@ -1,11 +1,16 @@
+import Link from "next/link";
+
 async function getTickets(){
+    // imitate delay
+    await new Promise(resolve => setTimeout(resolve, 2000))
+
     const res = await fetch('https://jsonplaceholder.typicode.com/posts/', {
         next: {
             revalidate: 0
         }
     })
 
-    return res.json();
+    return res.json()
 }
 
 export default async function TicketList() {
@@ -15,11 +20,13 @@ export default async function TicketList() {
         <>
             {tickets.map((ticket) => (
                 <div key={ticket.id} className="card my-5">
-                    <h3>{ticket.title}</h3>
-                    <p>{ticket.body.slice(0, 200)}</p>
-                    <div className={'pill'}>
-                        {ticket.id} ID
-                    </div>
+                    <Link href={`tickets/${ticket.id}`}>
+                            <h3>{ticket.title}</h3>
+                            <p>{ticket.body.slice(0, 200)}</p>
+                            <div className={'pill'}>
+                                {ticket.id} ID
+                            </div>
+                    </Link>
                 </div>
             ))}
 
